@@ -295,14 +295,18 @@ class Game(object):
             file.write(string)
 
     def get_best_score(self):
-        with open("best_score.sf", "r") as file:
-            data = file.readline()
-            if not data:
-                return
-            h256, score = data.split(":")
-            if h256 == hashlib.sha256(score.encode()).hexdigest():
-                self.BEST_SCORE[0] = int(score)
-            else:
+        try:
+            with open("best_score.sf", "r") as file:
+                data = file.readline()
+                if not data:
+                    return
+                h256, score = data.split(":")
+                if h256 == hashlib.sha256(score.encode()).hexdigest():
+                    self.BEST_SCORE[0] = int(score)
+                else:
+                    return
+        except Exception:
+            with open("best_score.sf", "w") as file:
                 return
 
     def is_best_score(self):
